@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,45 +14,31 @@ namespace WebSalesMVC.Controllers
     {
         private readonly WebSalesMVCContext _context;
 
-        public DepartmentsController(WebSalesMVCContext context)
-        {
-            _context = context;
-        }
+    public DepartmentsController(WebSalesMVCContext context) => this._context = context;
 
-        // GET: Departments
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Department.ToListAsync());
-        }
+    // GET: Departments
+    public async Task<IActionResult> Index() => this.View(await this._context.Department.ToListAsync());
 
-        // GET: Departments/Details/5
-        public async Task<IActionResult> Details(int? id)
+    // GET: Departments/Details/5
+    public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var department = await _context.Department
+            var department = await this._context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+      return department == null ? this.NotFound() : (IActionResult)this.View(department);
+    }
 
-            return View(department);
-        }
+    // GET: Departments/Create
+    public IActionResult Create() => this.View();
 
-        // GET: Departments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Departments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+    // POST: Departments/Create
+    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+    // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
         {

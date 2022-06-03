@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,7 +34,8 @@ namespace WebSalesMVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<WebSalesMVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WebSalesMVCContext")));
+                    options.UseMySql(this.Configuration.GetConnectionString("WebSalesMVCContext"), builder =>
+                        builder.MigrationsAssembly("WebSalesMVC")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
