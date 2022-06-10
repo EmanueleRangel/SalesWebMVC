@@ -54,8 +54,12 @@ namespace WebSalesMVC.Controllers {
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id) {
-      await this.sellerService.RemoveAsync(id);
-      return this.RedirectToAction(nameof(Index));
+      try {
+        await this.sellerService.RemoveAsync(id);
+        return this.RedirectToAction(nameof(Index));
+      } catch (IntegrityException e) {
+        return this.RedirectToAction(nameof(Error), new { message = "Can't delete seller because he/she has sales" });
+      }
     }
 
     public async Task<IActionResult> Details(int? id) {

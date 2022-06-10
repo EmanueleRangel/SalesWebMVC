@@ -22,9 +22,14 @@ namespace WebSalesMVC.Services {
     public async Task<Seller> FindByIdAsync(int id) => await this.context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
 
     public async Task RemoveAsync(int id) {
-      var obj = await this.context.Seller.FindAsync(id);
-      this.context.Seller.Remove(obj);
-      await this.context.SaveChangesAsync();
+      try {
+        var obj = await this.context.Seller.FindAsync(id);
+        this.context.Seller.Remove(obj);
+        await this.context.SaveChangesAsync();
+      } catch (DbUpdateException e) {
+        throw new IntegrityException(e.Message);
+      }
+
     }
 
     public async Task UpdateAsync(Seller obj) {
