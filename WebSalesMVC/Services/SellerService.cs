@@ -12,5 +12,10 @@ namespace WebSalesMVC.Services {
     public SellerService(WebSalesMVCContext context) => this.context = context;
 
     public List<Seller> FindAll() => this.context.Seller.ToList();
+
+    public void Insert(Seller obj) {
+      this.context.Add(obj);
+      this.context.SaveChanges();
+    }
   }
 }
