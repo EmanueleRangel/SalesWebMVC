@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebSalesMVC.Data;
 using WebSalesMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebSalesMVC.Services {
   public class SellerService {
@@ -18,7 +17,7 @@ namespace WebSalesMVC.Services {
       this.context.SaveChanges();
     }
 
-    public Seller FindById(int id) => this.context.Seller.FirstOrDefault(obj => obj.Id == id);
+    public Seller FindById(int id) => this.context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id);
 
     public void Remove(int id) {
       var obj = this.context.Seller.Find(id);

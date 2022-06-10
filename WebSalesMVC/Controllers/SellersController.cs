@@ -45,5 +45,12 @@ namespace WebSalesMVC.Controllers {
       this.sellerService.Remove(id);
       return this.RedirectToAction(nameof(Index));
     }
+
+    public IActionResult Details(int? id) {
+      if (id == null) return this.NotFound();
+
+      var obj = this.sellerService.FindById(id.Value);
+      return obj == null ? this.NotFound() : (IActionResult)this.View(obj);
+    }
   }
 }
