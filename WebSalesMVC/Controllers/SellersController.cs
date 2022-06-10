@@ -32,6 +32,13 @@ namespace WebSalesMVC.Controllers {
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(Seller seller) {
+
+      if (!this.ModelState.IsValid) {
+        var departments = this.departmentService.FindAll();
+        var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+        return this.View(viewModel);
+      }
+
       this.sellerService.Insert(seller);
       return this.RedirectToAction(nameof(Index));
     }
@@ -71,6 +78,12 @@ namespace WebSalesMVC.Controllers {
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, Seller seller) {
+      if (!this.ModelState.IsValid) {
+        var departments = this.departmentService.FindAll();
+        var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+        return this.View(viewModel);
+      }
+
       if (id != seller.Id) return this.RedirectToAction(nameof(Error), new { message = "Id missmatch" });
 
       try {
