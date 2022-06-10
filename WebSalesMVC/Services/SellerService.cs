@@ -3,6 +3,7 @@ using System.Linq;
 using WebSalesMVC.Data;
 using WebSalesMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using WebSalesMVC.Services.Exceptions;
 
 namespace WebSalesMVC.Services {
   public class SellerService {
@@ -23,6 +24,19 @@ namespace WebSalesMVC.Services {
       var obj = this.context.Seller.Find(id);
       this.context.Seller.Remove(obj);
       this.context.SaveChanges();
+    }
+
+    public void Update(Seller obj) {
+
+      if (!this.context.Seller.Any(x => x.Id == obj.Id)) throw new NotFoundException("Id not found");
+      try {
+        this.context.Update(obj);
+        this.context.SaveChanges();
+      }
+      catch (DbUpdateConcurrencyException e) {
+        throw new DbConcurrencyException(e.Message);
+      }
+     
     }
   }
 }

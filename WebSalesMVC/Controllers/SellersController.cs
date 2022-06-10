@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebSalesMVC.Models;
 using WebSalesMVC.Models.ViewModels;
 using WebSalesMVC.Services;
+using WebSalesMVC.Services.Exceptions;
 
 namespace WebSalesMVC.Controllers {
   public class SellersController : Controller {
@@ -51,6 +53,34 @@ namespace WebSalesMVC.Controllers {
 
       var obj = this.sellerService.FindById(id.Value);
       return obj == null ? this.NotFound() : (IActionResult)this.View(obj);
+    }
+
+    public IActionResult Edit(int? id) {
+      if (id == null) return this.NotFound();
+
+      var obj = this.sellerService.FindById(id.Value);
+      if (obj == null) return this.NotFound();
+
+      var departments = this.departmentService.FindAll();
+      var viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+      return this.View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, Seller seller) {
+      if (id != seller.Id) return this.BadRequest();
+
+      try {
+        this.sellerService.Update(seller);
+        return this.RedirectToAction(nameof(Index));
+      }
+      catch (NotFoundException) {
+        return this.NotFound();
+      }
+      catch (DbConcurrencyException) {
+        return this.BadRequest();
+      }
     }
   }
 }
