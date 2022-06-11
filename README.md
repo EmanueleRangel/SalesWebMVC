@@ -23,12 +23,12 @@ A aplicaçao possui as três camadas que são características do padrão arquit
 ### Métodos 
 
 Nas entidades de Departments e Sellers, é possível fazer o gerenciamento de dados através do CRUD básico: listar
-todos os registros, criar um novo registro, atualizar a informação de um registro específico e deletar um registro.
+todos os registros, criar um novo registro, atualizar a informação de um registro específico e deletar um registro:
 
 ![crud-gif](https://s8.gifyu.com/images/video-crud.gif)
 
 Na entidade SalesRecord é possível realizar buscas dos registros de vendas de um determinado período tempo. É possível
-fazer tanto a busca simples, quanto a busca agrupada, que retorna os registros de vendas de acordo com o seu departamento.
+fazer tanto a busca simples, quanto a busca agrupada, que retorna os registros de vendas de acordo com o seu departamento:
 
 ![busca-gif](https://s8.gifyu.com/images/video-busca.gif)
 
